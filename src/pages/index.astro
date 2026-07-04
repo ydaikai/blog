@@ -2,32 +2,98 @@
 import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import FormattedDate from '../components/FormattedDate.astro';
 import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog')).sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="ja">
 	<head>
 		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
 	</head>
 	<body>
 		<Header title={SITE_TITLE} />
 		<main>
-			<h1>ydaikai.com へようこそ!</h1>
-			<p></p>
-			<h2>このサイトについて</h2>
-			<p>
-				このサイトでは気になったことや日々の知見をまとめていきます。ジャンルは特に定めずにざっくばらんに書いていきます!
-			</p>
-			<p>
-				Blogの体を取りながら色々と試行錯誤していくつもりです〜
-			</p>
-			<p></p>
-			<h2>自己紹介など</h2>
-			<p>
-				<a href="./about">こちら</a>をご覧ください
-			</p>
+			<section class="profile">
+				<img src="/unnamed.png" alt="" class="avatar" width="72" height="72" />
+				<h1>ydaikai</h1>
+				<p class="bio">
+					このサイトでは気になったことや日々の知見を、ジャンルを問わずざっくばらんに書いていきます。
+				</p>
+				<div class="links">
+					<a href="https://twitter.com/0xdaikai" target="_blank" rel="noopener">X (Twitter)</a>
+					<a href="https://github.com/ydaikai" target="_blank" rel="noopener">GitHub</a>
+					<a href="/about">About</a>
+				</div>
+			</section>
+
+			<section class="posts">
+				<h2>Blog</h2>
+				<ul class="post-list">
+					{
+						posts.map((post) => (
+							<li>
+								<a href={`/blog/${post.slug}/`}>
+									<span class="post-title">{post.data.title}</span>
+									<span class="post-date">
+										<FormattedDate date={post.data.pubDate} />
+									</span>
+								</a>
+							</li>
+						))
+					}
+				</ul>
+			</section>
 		</main>
 		<Footer />
 	</body>
 </html>
+
+<style>
+	.profile {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		margin-bottom: 3em;
+	}
+	.avatar {
+		border-radius: 50%;
+		margin-bottom: 1em;
+		border: 1px solid var(--border);
+	}
+	.profile h1 {
+		font-size: 1.4em;
+		margin-bottom: 0.4em;
+	}
+	.bio {
+		color: var(--text-secondary);
+		margin-bottom: 1em;
+	}
+	.links {
+		display: flex;
+		gap: 1em;
+		flex-wrap: wrap;
+	}
+	.links a {
+		font-size: 0.92em;
+		color: var(--text-secondary);
+		text-decoration: none;
+		border-bottom: 1px solid var(--border);
+	}
+	.links a:hover {
+		color: var(--accent);
+		border-color: var(--accent);
+	}
+	.posts h2 {
+		font-size: 1em;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		color: var(--text-muted);
+		margin-bottom: 1em;
+	}
+</style>
