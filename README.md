@@ -1,68 +1,55 @@
-# Astro Starter Kit: Blog
+# ydaikai.com
+
+[Astro](https://astro.build) で作っている個人ブログのソースです。公開URLは [ydaikai.com](https://ydaikai.com)。
+
+## 記事の書き方
+
+`src/content/blog/` に `.md`（または `.mdx`）ファイルを1つ追加するだけで記事になります。
+
+```md
+---
+title: '記事タイトル'
+description: '記事の概要'
+pubDate: 'Jul 04 2026'
+---
+
+本文をここに Markdown で書く。
+```
+
+frontmatter は `src/content/config.ts` のスキーマで型チェックされます。
+
+| フィールド     | 必須 | 説明                         |
+| -------------- | :--: | ---------------------------- |
+| `title`        |  ✅  | 記事タイトル                 |
+| `description`  |  ✅  | 一覧・OGP用の概要文          |
+| `pubDate`      |  ✅  | 公開日（例: `Jul 04 2026`）  |
+| `updatedDate`  |      | 更新日                       |
+| `heroImage`    |      | アイキャッチ画像のパス       |
+
+保存して `main` に push すれば、CI/CD 経由で自動的に公開されます。
+
+## 開発
 
 ```sh
-npm create astro@latest -- --template blog
+npm install
+npm run dev      # localhost:4321 でローカル確認
+npm run build    # 本番ビルド（./dist/）
+npm run preview  # ビルド結果をローカルでプレビュー
 ```
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/blog)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/blog)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/blog/devcontainer.json)
-
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
-
-![blog](https://github.com/withastro/astro/assets/2244813/ff10799f-a816-4703-b967-c78997e8323d)
-
-Features:
-
-- ✅ Minimal styling (make it your own!)
-- ✅ 100/100 Lighthouse performance
-- ✅ SEO-friendly with canonical URLs and OpenGraph data
-- ✅ Sitemap support
-- ✅ RSS Feed support
-- ✅ Markdown & MDX support
-
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
+## 構成
 
 ```text
-├── public/
-├── src/
-│   ├── components/
-│   ├── content/
-│   ├── layouts/
-│   └── pages/
-├── astro.config.mjs
-├── README.md
-├── package.json
-└── tsconfig.json
+src/
+├── content/blog/   # 記事（Markdown / MDX）
+├── components/     # Header, Footer, BaseHead など
+├── layouts/        # BlogPost レイアウト
+├── pages/          # index / about / blog 一覧・詳細 / rss.xml
+├── styles/         # グローバルCSS（ライト/ダークモード対応）
+└── consts.ts       # サイトタイトル・説明などのグローバル設定
+public/             # 画像などの静的ファイル
+public/works/       # ポートフォリオ（作曲・DJ・プロジェクトなど）用の置き場所（未着手）
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
-
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
-
-The `src/content/` directory contains "collections" of related Markdown and MDX documents. Use `getCollection()` to retrieve posts from `src/content/blog/`, and type-check your frontmatter using an optional schema. See [Astro's Content Collections docs](https://docs.astro.build/en/guides/content-collections/) to learn more.
-
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Check out [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
-
-## Credit
-
-This theme is based off of the lovely [Bear Blog](https://github.com/HermanMartinus/bearblog/).
+- ダークモード切り替え、RSS配信、サイトマップに対応済み。
+- ナビゲーションは `Blog` / `About` のみのミニマル構成。
